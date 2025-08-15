@@ -50,7 +50,7 @@ jobs:
           remove-codeql:        true
           remove-docker-images: true
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install test prerequisites
         # From docker.yml
         run: |
