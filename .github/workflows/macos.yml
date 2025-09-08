@@ -74,7 +74,7 @@ jobs:
           repository: ${{ inputs.sage_repo }}
           ref: ${{ inputs.sage_ref }}
           fetch-depth: 10000
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         # As of 2024-02-03, the macOS M1 runners do not have preinstalled python or pipx.
         # Installing pipx follows the approach of https://github.com/pypa/cibuildwheel/pull/1743
         id: python
