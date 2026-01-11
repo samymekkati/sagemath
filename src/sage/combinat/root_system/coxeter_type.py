@@ -157,6 +157,8 @@ class CoxeterType(SageObject, metaclass=ClasscallMetaclass):
             result = [t for t in result if t.is_finite() == finite]
         if affine is not None:
             result = [t for t in result if t.is_affine() == affine]
+        if hyperbolic is not None:
+            result = [t for t in result if t.is_hyperbolic() == hyperbolic]
         return result
 
     @cached_method
@@ -195,7 +197,12 @@ class CoxeterType(SageObject, metaclass=ClasscallMetaclass):
                                            ['E', 7, 1], ['E', 8, 1], ['F', 4, 1],
                                            ['G', 2, 1], ['A', 1, 1]]]
 
-        return finite + affine
+        hyperbolic = [CoxeterType(t) for t in [['Hyperbolic', (141, 1, 3)], ['Hyperbolic', (141, 1, 4)],
+                                               ['Hyperbolic', (141, 2, 5)], ['Hyperbolic', (142, 1, 6)],
+                                               ['Hyperbolic', (142, 1, 7)], ['Hyperbolic', (142, 1, 8)],
+                                               ['Hyperbolic', (144, 1, 3)]]]
+
+        return finite + affine + hyperbolic
 
     @abstract_method
     def rank(self):
@@ -321,6 +328,21 @@ class CoxeterType(SageObject, metaclass=ClasscallMetaclass):
              [['E', 6], True], [['E', 7], True], [['E', 8], True],
              [['F', 4], True], [['G', 2], True],
              [['I', 5], False], [['H', 3], False], [['H', 4], False]]
+        """
+        return False
+
+    def is_hyperbolic(self):
+        """
+        Return whether ``self`` is hyperbolic.
+        
+        This returns ``False`` by default. Derived class should override this
+        appropriately.
+
+        EXAMPLES::
+            sage: CoxeterType(['A', 3]).is_hyperbolic()
+            False
+            sage: CoxeterType(['Hyp', (141, 1, 3)]).is_hyperbolic()
+            True
         """
         return False
 
