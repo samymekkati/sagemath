@@ -103,7 +103,14 @@ class CoxeterType(SageObject, metaclass=ClasscallMetaclass):
              Coxeter type of ['D', 5, 1], Coxeter type of ['E', 6, 1],
              Coxeter type of ['E', 7, 1], Coxeter type of ['E', 8, 1],
              Coxeter type of ['F', 4, 1], Coxeter type of ['G', 2, 1],
-             Coxeter type of ['A', 1, 1]]
+             Coxeter type of ['A', 1, 1],
+             Coxeter type with Humphrey's datum (Page : 141, Column : 1, Row : 3),
+             Coxeter type with Humphrey's datum (Page : 141, Column : 1, Row : 4),
+             Coxeter type with Humphrey's datum (Page : 141, Column : 2, Row : 5),
+             Coxeter type with Humphrey's datum (Page : 142, Column : 1, Row : 6),
+             Coxeter type with Humphrey's datum (Page : 142, Column : 1, Row : 7),
+             Coxeter type with Humphrey's datum (Page : 142, Column : 1, Row : 8),
+             Coxeter type with Humphrey's datum (Page : 144, Column : 1, Row : 3)]
 
         The finite, affine and crystallographic options allow
         respectively for restricting to (non) finite, (non) affine,
@@ -137,12 +144,20 @@ class CoxeterType(SageObject, metaclass=ClasscallMetaclass):
              Coxeter type of ['C', 5, 1], Coxeter type of ['D', 5, 1],
              Coxeter type of ['E', 6, 1], Coxeter type of ['E', 7, 1],
              Coxeter type of ['E', 8, 1], Coxeter type of ['F', 4, 1],
-             Coxeter type of ['G', 2, 1], Coxeter type of ['A', 1, 1]]
+             Coxeter type of ['G', 2, 1], Coxeter type of ['A', 1, 1],
+             Coxeter type with Humphrey's datum (Page : 142, Column : 1, Row : 7),
+             Coxeter type with Humphrey's datum (Page : 142, Column : 1, Row : 8),
+             Coxeter type with Humphrey's datum (Page : 144, Column : 1, Row : 3)]
 
             sage: CoxeterType.samples(crystallographic=False)
             [Coxeter type of ['H', 3],
              Coxeter type of ['H', 4],
-             Coxeter type of ['I', 10]]
+             Coxeter type of ['I', 10],
+             Coxeter type with Humphrey's datum (Page : 141, Column : 1, Row : 3),
+             Coxeter type with Humphrey's datum (Page : 141, Column : 1, Row : 4),
+             Coxeter type with Humphrey's datum (Page : 141, Column : 2, Row : 5),
+             Coxeter type with Humphrey's datum (Page : 142, Column : 1, Row : 6)]
+
 
         .. TODO:: add some reducible Coxeter types (suggestions?)
 
@@ -185,7 +200,14 @@ class CoxeterType(SageObject, metaclass=ClasscallMetaclass):
              Coxeter type of ['D', 5, 1], Coxeter type of ['E', 6, 1],
              Coxeter type of ['E', 7, 1], Coxeter type of ['E', 8, 1],
              Coxeter type of ['F', 4, 1], Coxeter type of ['G', 2, 1],
-             Coxeter type of ['A', 1, 1]]
+             Coxeter type of ['A', 1, 1],
+             Coxeter type with Humphrey's datum (Page : 141, Column : 1, Row : 3),
+             Coxeter type with Humphrey's datum (Page : 141, Column : 1, Row : 4),
+             Coxeter type with Humphrey's datum (Page : 141, Column : 2, Row : 5),
+             Coxeter type with Humphrey's datum (Page : 142, Column : 1, Row : 6),
+             Coxeter type with Humphrey's datum (Page : 142, Column : 1, Row : 7),
+             Coxeter type with Humphrey's datum (Page : 142, Column : 1, Row : 8),
+             Coxeter type with Humphrey's datum (Page : 144, Column : 1, Row : 3)]
         """
         finite = [CoxeterType(t) for t in [['A', 1], ['A', 5], ['B', 1], ['B', 5],
                                            ['C', 1], ['C', 5], ['D', 4], ['D', 5],
@@ -334,14 +356,14 @@ class CoxeterType(SageObject, metaclass=ClasscallMetaclass):
     def is_hyperbolic(self):
         """
         Return whether ``self`` is hyperbolic.
-        
+
         This returns ``False`` by default. Derived class should override this
         appropriately.
 
         EXAMPLES::
             sage: CoxeterType(['A', 3]).is_hyperbolic()
             False
-            sage: CoxeterType(['Hyp', (141, 1, 3)]).is_hyperbolic()
+            sage: CoxeterType(['Hyperbolic', (141, 1, 3)]).is_hyperbolic()
             True
         """
         return False
