@@ -46,11 +46,17 @@ class CoxeterType(SageObject, metaclass=ClasscallMetaclass):
             sage: CoxeterType(['A',3])
             Coxeter type of ['A', 3]
         """
+        hyperbolic_prefix = ("Hyperbolic", "Ah", "Bh", "Dh", "Eh", "K", "L", "Q", "X")
         if len(x) == 1:
             x = x[0]
 
         if isinstance(x, CoxeterType):
             return x
+
+        if isinstance(x, (list, tuple)):
+            if x[0] in hyperbolic_prefix:
+                from sage.combinat.root_system.type_hyperbolic import CoxeterType_Hyperbolic
+                return CoxeterType_Hyperbolic(x)
 
         try:
             return CoxeterTypeFromCartanType(CartanType(x))
@@ -63,7 +69,7 @@ class CoxeterType(SageObject, metaclass=ClasscallMetaclass):
         raise NotImplementedError("Coxeter types not from Cartan types not yet implemented")
 
     @classmethod
-    def samples(self, finite=None, affine=None, crystallographic=None):
+    def samples(self, finite=None, affine=None, crystallographic=None, hyperbolic=None):
         """
         Return a sample of the available Coxeter types.
 
@@ -75,9 +81,12 @@ class CoxeterType(SageObject, metaclass=ClasscallMetaclass):
 
         - ``crystallographic`` -- boolean or ``None`` (default: ``None``)
 
-        The sample contains all the exceptional finite and affine
-        Coxeter types, as well as typical representatives of the
-        infinite families.
+        - ``hyperbolic`` -- boolean or ``None`` (default: ``None``)
+
+        The sample contains the exceptional finite, affine and
+        crystallographic Coxeter types, together with some hyperbolic
+        types, and a few representatives of the classical infinite
+        families.
 
         EXAMPLES::
 

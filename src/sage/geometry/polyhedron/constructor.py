@@ -298,8 +298,7 @@ import sage.geometry.abc
 
 from sage.rings.integer_ring import ZZ
 
-from .misc import _make_listlist, _common_length_of
-
+from .misc import _make_listlist, _common_length_of, _find_base_ring
 
 #########################################################################
 def Polyhedron(vertices=None, rays=None, lines=None,
@@ -696,63 +695,7 @@ def Polyhedron(vertices=None, rays=None, lines=None,
     ambient_dim = deduced_ambient_dim
 
     # figure out base_ring
-    from sage.misc.flatten import flatten
-    from sage.structure.element import parent
-    from sage.categories.fields import Fields
-    from sage.categories.rings import Rings
-
-    values = flatten(vertices + rays + lines + ieqs + eqns)
-    if base_ring is not None:
-        convert = any(parent(x) is not base_ring for x in values)
-    elif not values:
-        base_ring = ZZ
-        convert = False
-    else:
-        P = parent(values[0])
-        if any(parent(x) is not P for x in values):
-            from sage.structure.sequence import Sequence
-            P = Sequence(values).universe()
-            convert = True
-        else:
-            convert = False
-
-        from sage.structure.coerce import py_scalar_parent
-        if isinstance(P, type):
-            base_ring = py_scalar_parent(P)
-            convert = convert or P is not base_ring
-        else:
-            base_ring = P
-
-        if base_ring not in Fields():
-            got_compact_Vrep = got_Vrep and not rays and not lines
-            got_cone_Vrep = got_Vrep and all(x == 0
-                                             for v in vertices for x in v)
-            if not got_compact_Vrep and not got_cone_Vrep:
-                base_ring = base_ring.fraction_field()
-                convert = True
-
-        if base_ring not in Rings():
-            raise ValueError('invalid base ring')
-
-        try:
-            from sage.symbolic.ring import SR
-        except ImportError:
-            SR = None
-        if base_ring is not SR and not base_ring.is_exact():
-            try:
-                from sage.rings.real_double import RDF
-            except ImportError:
-                RDF = None
-            try:
-                from sage.rings.real_mpfr import RR
-            except ImportError:
-                RR = None
-            # TODO: remove this hack?
-            if base_ring is RR:
-                base_ring = RDF
-                convert = True
-            elif base_ring is not RDF:
-                raise ValueError("the only allowed inexact ring is 'RDF' with backend 'cdd'")
+    base_ring, convert = _find_base_ring(base_ring, vertices, rays, lines, ieqs, eqns, got_Vrep, got_Hrep)
 
     # Add the origin if necessary
     if got_Vrep and len(vertices) == 0 and bool(rays + lines):
